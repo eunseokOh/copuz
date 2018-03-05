@@ -1,0 +1,101 @@
+var ActionEvents = function(options){
+	
+	this.preClicked = null; //이전 클릭한 canvasPieces Id
+	this.outlineColor = "silver"; //out line color 설정
+	this.movedList = []; //canvas-pieces를 puzzle-board-pieces에 옮길 시 추가됨
+	                     //resize 이벤트 발생 시 puzzle-board-pieces 위치에 맞게 canvas-pieces가 움직임
+	
+	this.options = {
+			canvasPieces : null,
+			puzzleBoardPieces : null,
+			piecesCount : null
+	};
+	
+	for(var i in options){
+		this.options[i] = options[i]
+	};
+	
+	this.canvasPieces = this.options.canvasPieces;
+	this.puzzleBoardPieces = this.options.puzzleBoardPieces;
+	this.piecesCount = this.options.piecesCount;
+	this.bind();
+}
+
+ActionEvents.prototype.bind = function(){
+	var self = this;
+	
+	function canvasPiecesNoneOutline(){
+		$('.'+self.canvasPieces).css({
+			"outline-color" : self.outlineColor,
+			"z-index" : "20",
+			"opacity" : "1",
+			"animation" : "none"
+		})
+	}
+	window.onresize = function(event){ //resize 이벤트
+		for(var i in self.movedList){
+			var tmpPBPoffset = $('#'+self.movedList[i]["puzzle-board-pieces"]).offset()
+			var tmpLeft = tmpPBPoffset.left
+			var tmpTop = tmpPBPoffset.top
+			
+			$('#'+self.movedList[i]["canvas-pieces"]).offset({
+				left : tmpLeft,
+				top : tmpTop
+			})
+		}
+	};
+	
+	$('.'+this.puzzleBoardPieces).on("click", function(){
+		if(!($(this).css('outline').indexOf("none") > -1)){ //outline이 있을때만 이벤트 적용
+			canvasPiecesNoneOutline()
+			
+			self.movedList.push({
+				"puzzle-board-pieces":$(this).attr("id"),
+				"canvas-pieces":self.preClicked.attr("id")
+			})
+			// start of animate
+			self.preClicked.css({
+				position:"absolute"
+			})
+			
+			self.preClicked.animate({
+				left: $(this).offset().left,
+				top: $(this).offset().top
+			}, 500)
+			// end of animate --> 0.5초안에 지정된 곳으로 움직임
+			
+			$('.'+self.puzzleBoardPieces).css({
+				"outline": "none"
+			})
+			
+			self.preClicked = null;
+		}
+	}) // end of puzzleBoardPieces clicked
+	
+	$('.'+this.canvasPieces).on("click", function(){
+		
+		if( self.preClicked && self.preClicked.attr('id') == $(this).attr('id')){
+			canvasPiecesNoneOutline()
+			$('.'+self.puzzleBoardPieces).css({
+				"outline": "none"
+			})
+			self.preClicked = null;
+		}else{
+			canvasPiecesNoneOutline()
+			$(this).css({
+				"outline-color" : "#FF8598",
+				"z-index" : "99",
+				"opacity" : "0.5",
+				"animation" : "piecesScale 1s infinite"
+			})
+			
+			$('.'+self.puzzleBoardPieces).css({
+				"outline": "solid",
+				"outline-width": "thin",
+				"outline-color": self.outlineColor
+			})
+			self.preClicked = $(this)
+		}
+	}) // end of canvasPieces clicked
+	
+}

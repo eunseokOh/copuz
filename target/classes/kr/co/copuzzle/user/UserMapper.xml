@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+			
+<mapper namespace="kr.co.copuzzle.user.UserMapper">
+
+	<!-- Select -->
+	
+	<select id="getSeq_user_noList" parameterType="hashmap" resultType="ScoreVO">
+		select 
+			u.user_id as user_id, u.user_name as user_name, score, max(level) as level
+		from 
+			tab_score s join tab_user u
+		on 
+			s.seq_user_no = u.seq_user_no
+		where 
+			u.user_id in 
+			<foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+				#{item.user_id}
+			</foreach>
+		group by s.seq_user_no
+		order by level desc
+			
+	</select>
+	
+	<select id="getTest" resultType="UserVO">
+		select *
+		from tab_user
+	</select>
+	
+	<select id="isJoin" resultType="int">
+		select count(user_id)
+		from tab_user
+		where user_id = #{user_id}
+	</select>
+	
+	<select id="getSeq_user_no" resultType="int" parameterType="String">
+		select seq_user_no
+		from tab_user
+		where user_id = #{user_id}
+	</select>
+	
+	
+	<!-- insert -->
+	
+	<insert id="userJoin" parameterType="UserVO">
+		insert into tab_user(user_id, user_name)
+		values(#{user_id}, #{user_name})
+	</insert>
+	
+	
+</mapper>
+
+
+
+

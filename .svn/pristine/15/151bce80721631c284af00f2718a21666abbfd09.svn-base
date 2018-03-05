@@ -1,0 +1,126 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Insert title here</title>
+
+<link rel="stylesheet" href="../resources/css/fontIcon/fontello-embedded.css"/>
+
+<style>
+body, html{
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	overflow: hidden;
+		
+}
+.options-header{
+	width: 70%;
+	max-width: 640px;
+	height: 10%;
+	background-color: #8C8979;
+	vertical-align: middle;
+	border-radius: 20px 20px 0 0; 
+	display: table;
+	position: relative;
+}
+
+.options-contents{
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.options-body{
+	width: 70%;
+	max-width: 640px;
+	height: 50%;
+	background-color: #F2F2F2;
+	border-radius: 0px 0px 20px 20px; 
+	display: table;
+}
+
+.options-text{
+	color: white;
+	font-size: 1.5em;
+	text-shadow: 1.5px 1.5px black;
+	font-weight: bold;
+}
+.wrapper{
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+
+.inner{
+	display: table-cell;
+	vertical-align: middle;
+}
+
+.icon-cancel{
+ color:#FFF6E5; 
+ font-size: 2em;  
+ position: absolute; 
+ right:3px;
+
+ 
+}
+.icon-cancel:active{
+	color:black;
+	transform: scale(1.5);
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="wrapper" align="center">
+<div class="inner">
+	<div class="options-header" >
+		<p class="options-contents options-text">OPTIONS</p>
+		<span class="icon-cancel" ></span>
+	</div>
+	<div class="options-body">
+		<div class="options-contents">
+		
+			<div style="width: 95%; height: 40%; background-color: #d9d9d9; border-radius: 20px 20px 20px 20px; display: table; " >
+				<div style="font-size: 2em; width: 80%; float: left; ">Video Sound</div>
+				<div style="width: 20%; float:left;">
+					<span class="icon-toggle icon-toggle-on" style="font-size: 2em; " ></span>
+				</div>
+			</div>
+			
+			<div style="width: 95%; height: 40%; background-color: #d9d9d9; margin-top: 10px; border-radius: 20px 20px 20px 20px; display: table;" >
+				<div style="font-size: 2em; width: 80%; float: left;">Hello</div>
+				<div style="width: 20%; float:left;">
+					<span class="icon-toggle icon-toggle-on" style="font-size: 2em; " ></span>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+</div>
+</div>
+
+<script>
+var myToggle = document.querySelectorAll('.icon-toggle');
+
+for(var i=0; i<myToggle.length; i++){
+	myToggle[i].addEventListener("click", function(){
+		var tmpClass = this.getAttribute('class');
+
+		if(tmpClass.indexOf('off') > -1){
+			this.className = 'icon-toggle-on'
+		}else{
+			this.className = 'icon-toggle-off'
+		}
+	})
+}
+
+
+</script>
+</body>
+</html>
